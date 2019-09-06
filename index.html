@@ -1,0 +1,41 @@
+<style> *{margin:0; padding:0; background-color: black;} </style>
+<canvas id="ctx"></canvas>
+<script>
+      (function (){
+        const canvas = document.getElementById('ctx')
+        const ctx = canvas.getContext('2d')
+        const W = canvas.width = window.innerWidth,
+              H = canvas.height = window.innerHeight
+        ctx.strokeStyle='#faf'
+        ctx.lineWidth = 1
+        let time = 0
+        setInterval(_=>{
+          time++
+          ctx.clearRect(0,0,W,H)
+          ctx.beginPath()
+
+          const speed = 5
+          const [S,C] = ['tan','sin'].map(x => n => Math[x](time/(n*speed))+1)
+          const dx = W, dy = H
+          const A = S(20), B = C(20)
+          for (let x=-W*20; x<W*20; x += dx)
+            for (let y=-H*20,i=0; y<H*20; y += dy, i++) {
+              const [a,b,c,d,e,f,g,h] = 
+              [x/A,-x/A,x/B,-x/B,y/A,-y/A,y/B,-y/B]
+              const [aa,bb,cc,dd] =
+              i % 2 ? [a/b,b/a,c/d,d/a] : [e,f,g,h]
+              ctx.bezierCurveTo(
+                aa,
+                cc,
+                bb,
+                dd,
+                x*A,
+                y*B)
+            }
+
+
+          ctx.stroke()
+          ctx.closePath()
+        },20)
+      })()
+</script>
